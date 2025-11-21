@@ -1,0 +1,242 @@
+{
+  "timestamp": "2025-11-22T01:43:29.727666",
+  "summary": {
+    "total": 33,
+    "passed": 33,
+    "failed": 0,
+    "pass_rate": 100.0
+  },
+  "results": [
+    {
+      "test": "Server instantiation",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:27.210789"
+    },
+    {
+      "test": "Tools loaded (7/7)",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:27.210800"
+    },
+    {
+      "test": "All expected tools present",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:27.210807"
+    },
+    {
+      "test": "Initialize: JSON-RPC version",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:27.210829"
+    },
+    {
+      "test": "Initialize: Response ID matches",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:27.210833"
+    },
+    {
+      "test": "Initialize: Protocol version in response",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:27.210836"
+    },
+    {
+      "test": "Initialize: Server info in response",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:27.210839"
+    },
+    {
+      "test": "Tools list: Returns 7 tools",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:27.210850"
+    },
+    {
+      "test": "System info: Has hostname",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.212142"
+    },
+    {
+      "test": "System info: Has platform",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.212177"
+    },
+    {
+      "test": "System info: Has cpu_count",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.212186"
+    },
+    {
+      "test": "System info: Has cpu_percent",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.212193"
+    },
+    {
+      "test": "System info: Has memory",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.212200"
+    },
+    {
+      "test": "System info: Has disk",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.212206"
+    },
+    {
+      "test": "System info: Has uptime",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.212213"
+    },
+    {
+      "test": "Service status: Has process count",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.295219"
+    },
+    {
+      "test": "Service status: Has top processes",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.295256"
+    },
+    {
+      "test": "User info: Has current user",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.296105"
+    },
+    {
+      "test": "User info: Tool execution",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.296115"
+    },
+    {
+      "test": "Logs: syslog execution",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.296166"
+    },
+    {
+      "test": "Logs: dmesg execution",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.689131"
+    },
+    {
+      "test": "Network info: Has interfaces",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.703647"
+    },
+    {
+      "test": "Network info: Has I/O counters",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.703668"
+    },
+    {
+      "test": "Analyze logs: summary",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.706265"
+    },
+    {
+      "test": "Analyze logs: errors",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.709303"
+    },
+    {
+      "test": "Analyze logs: security",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.711233"
+    },
+    {
+      "test": "Analyze logs: performance",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:28.712940"
+    },
+    {
+      "test": "Health check: Has system info",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:29.723355"
+    },
+    {
+      "test": "Health check: Has health analysis",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:29.723379"
+    },
+    {
+      "test": "LLM mode detected: ollama",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "Using ollama",
+      "timestamp": "2025-11-22T01:43:29.727088"
+    },
+    {
+      "test": "LLM mode is valid",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:29.727119"
+    },
+    {
+      "test": "Error handling: Invalid method returns error",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:29.727170"
+    },
+    {
+      "test": "Error handling: Invalid tool returns error",
+      "status": "\u2705 PASS",
+      "passed": true,
+      "message": "",
+      "timestamp": "2025-11-22T01:43:29.727182"
+    }
+  ]
+}

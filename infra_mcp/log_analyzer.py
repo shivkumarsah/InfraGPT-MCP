@@ -1,9 +1,10 @@
 """
-AI-powered log analysis using Gemini LLM.
+AI-powered log analysis using Ollama (local) or Gemini LLM.
 """
 
 import os
 import logging
+import requests
 from typing import Dict, List, Any, Optional
 from datetime import datetime
 
@@ -11,37 +12,92 @@ logger = logging.getLogger(__name__)
 
 
 class LogAnalyzer:
-    """AI-powered log analysis using Gemini LLM."""
+    """AI-powered log analysis using Ollama (primary) or Gemini LLM (fallback)."""
     
     def __init__(self, api_key: Optional[str] = None):
-        self.api_key = api_key or os.getenv('GEMINI_API_KEY')
-        self.mock_mode = not self.api_key
+        self.ollama_url = os.getenv('OLLAMA_URL', 'http://localhost:11434')
+        self.ollama_model = os.getenv('OLLAMA_MODEL', 'llama3.2')
+        self.gemini_api_key = api_key or os.getenv('GEMINI_API_KEY')
         
-        if self.mock_mode:
-            logger.warning("No Gemini API key found. Running in mock mode.")
-        else:
+        self.llm_mode = "mock"  # Default to mock
+        self.model = None
+        
+        # Try Ollama first (priority 1)
+        if self._check_ollama():
+            self.llm_mode = "ollama"
+            logger.info(f"Using Ollama at {self.ollama_url} with model {self.ollama_model}")
+        # Try Gemini as fallback (priority 2)
+        elif self.gemini_api_key:
             try:
                 import google.generativeai as genai
-                genai.configure(api_key=self.api_key)
+                genai.configure(api_key=self.gemini_api_key)
                 self.model = genai.GenerativeModel('gemini-1.5-flash')
-                self.mock_mode = False
+                self.llm_mode = "gemini"
+                logger.info("Using Gemini API for log analysis")
             except ImportError:
-                logger.warning("google-generativeai not available. Running in mock mode.")
-                self.mock_mode = True
+                logger.warning("google-generativeai not available. Falling back to mock mode.")
             except Exception as e:
-                logger.error(f"Error initializing Gemini: {e}. Running in mock mode.")
-                self.mock_mode = True
+                logger.error(f"Error initializing Gemini: {e}. Falling back to mock mode.")
+        else:
+            logger.warning("No LLM available (Ollama or Gemini). Running in mock mode.")
+    
+    def _check_ollama(self) -> bool:
+        """Check if Ollama is available and running."""
+        try:
+            response = requests.get(f"{self.ollama_url}/api/tags", timeout=2)
+            if response.status_code == 200:
+                tags = response.json()
+                models = [m.get('name', '') for m in tags.get('models', [])]
+                # Check if our preferred model exists
+                if any(self.ollama_model in model for model in models):
+                    return True
+                # If preferred model not found, use first available
+                elif models:
+                    self.ollama_model = models[0].split(':')[0]
+                    logger.info(f"Preferred model not found, using {self.ollama_model}")
+                    return True
+            return False
+        except Exception as e:
+            logger.debug(f"Ollama not available: {e}")
+            return False
+    
+    def _query_ollama(self, prompt: str) -> str:
+        """Query Ollama API."""
+        try:
+            response = requests.post(
+                f"{self.ollama_url}/api/generate",
+                json={
+                    "model": self.ollama_model,
+                    "prompt": prompt,
+                    "stream": False,
+                    "options": {
+                        "temperature": 0.7,
+                        "num_predict": 2000
+                    }
+                },
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                result = response.json()
+                return result.get('response', '')
+            else:
+                logger.error(f"Ollama API error: {response.status_code}")
+                return None
+        except Exception as e:
+            logger.error(f"Error querying Ollama: {e}")
+            return None
     
     def analyze_logs(self, logs: List[str], analysis_type: str = "summary") -> Dict[str, Any]:
         """
-        Analyze logs using Gemini LLM.
+        Analyze logs using Ollama (primary), Gemini (fallback), or mock mode.
         
         Args:
             logs: List of log lines to analyze
             analysis_type: Type of analysis - 'summary', 'errors', 'security', 'performance'
         """
         try:
-            if self.mock_mode:
+            if self.llm_mode == "mock":
                 return self._mock_analyze_logs(logs, analysis_type)
             
             # Prepare logs for analysis
@@ -111,28 +167,43 @@ class LogAnalyzer:
             
             prompt = prompts.get(analysis_type, prompts["summary"])
             
-            # Generate response using Gemini
-            response = self.model.generate_content(prompt)
+            # Try Ollama first
+            if self.llm_mode == "ollama":
+                analysis_text = self._query_ollama(prompt)
+                if analysis_text:
+                    return {
+                        "analysis_type": analysis_type,
+                        "logs_analyzed": len(logs),
+                        "analysis": analysis_text,
+                        "generated_at": datetime.now().isoformat(),
+                        "model": f"ollama/{self.ollama_model}",
+                        "llm_mode": "ollama"
+                    }
+                else:
+                    # Ollama failed, try Gemini if available
+                    logger.warning("Ollama failed, trying Gemini fallback")
+                    if self.gemini_api_key and self.model:
+                        self.llm_mode = "gemini"
             
-            return {
-                "analysis_type": analysis_type,
-                "logs_analyzed": len(logs),
-                "analysis": response.text,
-                "generated_at": datetime.now().isoformat(),
-                "model": "gemini-1.5-flash",
-                "mock_mode": False
-            }
+            # Use Gemini
+            if self.llm_mode == "gemini":
+                response = self.model.generate_content(prompt)
+                return {
+                    "analysis_type": analysis_type,
+                    "logs_analyzed": len(logs),
+                    "analysis": response.text,
+                    "generated_at": datetime.now().isoformat(),
+                    "model": "gemini-1.5-flash",
+                    "llm_mode": "gemini"
+                }
+            
+            # If both failed, use mock
+            return self._mock_analyze_logs(logs, analysis_type)
             
         except Exception as e:
             logger.error(f"Error in log analysis: {e}")
-            return {
-                "analysis_type": analysis_type,
-                "logs_analyzed": len(logs),
-                "analysis": f"Error analyzing logs: {str(e)}",
-                "generated_at": datetime.now().isoformat(),
-                "error": str(e),
-                "mock_mode": self.mock_mode
-            }
+            # Fallback to mock mode on error
+            return self._mock_analyze_logs(logs, analysis_type)
     
     def _mock_analyze_logs(self, logs: List[str], analysis_type: str) -> Dict[str, Any]:
         """Mock log analysis for demonstration purposes."""
@@ -276,7 +347,7 @@ class LogAnalyzer:
     def analyze_system_health(self, system_info: Dict[str, Any], logs: List[str]) -> Dict[str, Any]:
         """Comprehensive system health analysis combining metrics and logs."""
         try:
-            if self.mock_mode:
+            if self.llm_mode == "mock":
                 return self._mock_health_analysis(system_info, logs)
             
             # Prepare comprehensive analysis prompt
@@ -300,16 +371,37 @@ class LogAnalyzer:
             Format as a structured health report.
             """
             
-            response = self.model.generate_content(prompt)
+            # Try Ollama first
+            if self.llm_mode == "ollama":
+                analysis_text = self._query_ollama(prompt)
+                if analysis_text:
+                    return {
+                        "health_analysis": analysis_text,
+                        "system_info_analyzed": True,
+                        "logs_analyzed": len(logs),
+                        "generated_at": datetime.now().isoformat(),
+                        "model": f"ollama/{self.ollama_model}",
+                        "llm_mode": "ollama"
+                    }
+                else:
+                    logger.warning("Ollama failed for health analysis, trying Gemini")
+                    if self.gemini_api_key and self.model:
+                        self.llm_mode = "gemini"
             
-            return {
-                "health_analysis": response.text,
-                "system_info_analyzed": True,
-                "logs_analyzed": len(logs),
-                "generated_at": datetime.now().isoformat(),
-                "model": "gemini-1.5-flash",
-                "mock_mode": False
-            }
+            # Use Gemini
+            if self.llm_mode == "gemini":
+                response = self.model.generate_content(prompt)
+                return {
+                    "health_analysis": response.text,
+                    "system_info_analyzed": True,
+                    "logs_analyzed": len(logs),
+                    "generated_at": datetime.now().isoformat(),
+                    "model": "gemini-1.5-flash",
+                    "llm_mode": "gemini"
+                }
+            
+            # Fallback to mock
+            return self._mock_health_analysis(system_info, logs)
             
         except Exception as e:
             logger.error(f"Error in health analysis: {e}")
