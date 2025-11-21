@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "infra-monitor": {
+      "command": "/Users/shivkumars/.pyenv/shims/python3",
+      "args": [
+        "-u",
+        "-m",
+        "infra_mcp.server"
+      ],
+      "cwd": "/Users/shivkumars/ProjectsLocal/InfraGPT-NerdMeetup",
+      "env": {
+        "PYTHONPATH": "/Users/shivkumars/ProjectsLocal/InfraGPT-NerdMeetup",
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  }
+}
