@@ -30,6 +30,12 @@ Visual architecture diagrams using Mermaid.
 **[Architecture Diagrams](diagrams/architecture.md)**  
 Interactive Mermaid diagrams showing system architecture, data flow, and component relationships.
 
+### 🎤 [Presentation](PRESENTATION.md)
+PowerPoint slide content for project presentations.
+
+**[Presentation Content](PRESENTATION.md)**  
+Complete 6-slide PowerPoint presentation with speaker notes, design tips, and use cases.
+
 ---
 
 ## 🎯 Quick Navigation
