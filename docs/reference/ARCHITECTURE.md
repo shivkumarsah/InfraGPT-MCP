@@ -373,10 +373,10 @@ Development:
   Local Python ─► Direct execution ─► Test client
 
 Production:
-  Claude Desktop ─► stdio MCP ─► InfraGPT-NerdMeetup
+  Claude Desktop ─► stdio MCP ─► InfraGPT-MCP
 
 Alternative:
-  Any MCP Client ─► stdio MCP ─► InfraGPT-NerdMeetup
+  Any MCP Client ─► stdio MCP ─► InfraGPT-MCP
 ```
 
 ## Version Compatibility

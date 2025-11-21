@@ -7,7 +7,7 @@ Get started with the Infrastructure MCP Server in 5 minutes!
 Run the automated setup script:
 
 ```bash
-cd /Users/shivkumars/ProjectsLocal/InfraGPT-NerdMeetup
+cd /Users/shivkumars/ProjectsLocal/InfraGPT-MCP
 ./setup.sh
 ```
 
@@ -23,7 +23,7 @@ This script will:
 ### Step 1: Install Dependencies
 
 ```bash
-cd /Users/shivkumars/ProjectsLocal/InfraGPT-NerdMeetup
+cd /Users/shivkumars/ProjectsLocal/InfraGPT-MCP
 pip3 install -r requirements.txt
 ```
 
@@ -53,7 +53,7 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
     "infra-monitor": {
       "command": "python3",
       "args": ["-m", "infra_mcp.server"],
-      "cwd": "/Users/shivkumars/ProjectsLocal/InfraGPT-NerdMeetup",
+      "cwd": "/Users/shivkumars/ProjectsLocal/InfraGPT-MCP",
       "env": {
         "GEMINI_API_KEY": "${GEMINI_API_KEY}"
       }

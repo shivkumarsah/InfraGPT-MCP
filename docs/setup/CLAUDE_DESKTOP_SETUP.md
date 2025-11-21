@@ -13,7 +13,7 @@ This guide will help you integrate the Infrastructure MCP Server with Claude Des
 ### Step 1: Install Dependencies
 
 ```bash
-cd /Users/shivkumars/ProjectsLocal/InfraGPT-NerdMeetup
+cd /Users/shivkumars/ProjectsLocal/InfraGPT-MCP
 pip install -r requirements.txt
 ```
 
@@ -49,7 +49,7 @@ Create or edit `~/Library/Application Support/Claude/claude_desktop_config.json`
     "infra-monitor": {
       "command": "python",
       "args": ["-m", "infra_mcp.server"],
-      "cwd": "/Users/shivkumars/ProjectsLocal/InfraGPT-NerdMeetup",
+      "cwd": "/Users/shivkumars/ProjectsLocal/InfraGPT-MCP",
       "env": {
         "GEMINI_API_KEY": "${GEMINI_API_KEY}"
       }
@@ -180,12 +180,12 @@ Expected output:
 
 2. Verify the `cwd` path is correct:
    ```bash
-   ls -la /Users/shivkumars/ProjectsLocal/InfraGPT-NerdMeetup/infra_mcp
+   ls -la /Users/shivkumars/ProjectsLocal/InfraGPT-MCP/infra_mcp
    ```
 
 3. Test the server manually:
    ```bash
-   cd /Users/shivkumars/ProjectsLocal/InfraGPT-NerdMeetup
+   cd /Users/shivkumars/ProjectsLocal/InfraGPT-MCP
    python -m infra_mcp.server
    ```
    Type: `{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}`
@@ -237,7 +237,7 @@ Expected output:
 Run the comprehensive test suite:
 
 ```bash
-cd /Users/shivkumars/ProjectsLocal/InfraGPT-NerdMeetup
+cd /Users/shivkumars/ProjectsLocal/InfraGPT-MCP
 python test_client.py
 ```
 

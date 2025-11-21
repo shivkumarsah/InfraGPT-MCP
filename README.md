@@ -24,7 +24,7 @@ python test_client.py
     "infra-monitor": {
       "command": "python3",
       "args": ["-m", "infra_mcp.server"],
-      "cwd": "/path/to/InfraGPT-NerdMeetup"
+      "cwd": "/path/to/InfraGPT-MCP"
     }
   }
 }

@@ -1,4 +1,4 @@
-# InfraGPT-NerdMeetup Documentation
+# InfraGPT-MCP Documentation
 
 > Comprehensive documentation for the Infrastructure MCP Server
 
